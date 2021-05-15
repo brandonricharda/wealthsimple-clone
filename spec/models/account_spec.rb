@@ -4,7 +4,7 @@ RSpec.describe Account, :type => :model do
 
     describe "#new" do
 
-        context "when initialized without name" do
+        context "when called without name" do
             it "responds invalid" do
                 expect(Account.new).to_not be_valid
             end
@@ -14,7 +14,7 @@ RSpec.describe Account, :type => :model do
 
     describe "#create" do
 
-        context "when initialized with valid input" do
+        context "when called with valid input" do
             it "sets balance to 0.0 by default" do
                 expect(Account.create(
                   :name => ENV["account_name"]
@@ -26,7 +26,7 @@ RSpec.describe Account, :type => :model do
 
     describe ".user" do
 
-        context "when initialized on non-associated account" do
+        context "when called on non-associated account" do
             it "returns nil" do
                 expect(Account.create(
                     :name => ENV["account_name"]

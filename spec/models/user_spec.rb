@@ -4,13 +4,13 @@ RSpec.describe User, :type => :model do
 
     describe "#new" do
 
-        context "when initialized without inputs" do
+        context "when called without inputs" do
             it "responds invalid" do
                 expect(User.new).to_not be_valid
             end
         end
 
-        context "when initialized with just name" do
+        context "when called with just name" do
             it "responds invalid" do
                 expect(User.new(
                     :name => ENV["valid_name"]
@@ -18,7 +18,7 @@ RSpec.describe User, :type => :model do
             end
         end
 
-        context "when initialized with name and email" do
+        context "when called with name and email" do
             it "responds invalid" do
                 expect(User.new(
                     :name => ENV["valid_name"],
