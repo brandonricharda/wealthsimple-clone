@@ -6,9 +6,17 @@ RSpec.describe Account, :type => :model do
 
     describe "#new" do
 
+        let(:user) {
+            User.create(
+                :name => ENV["valid_name"],
+                :email => ENV["valid_email"],
+                :password => ENV["password"]
+            )
+        }
+
         context "when called without name" do
             it "responds invalid" do
-                expect(Account.new).to_not be_valid
+                expect(user.accounts.create).to_not be_valid
             end
         end
 
@@ -26,7 +34,7 @@ RSpec.describe Account, :type => :model do
 
         context "when called with valid input" do
             it "sets balance to 0 by default" do
-                expect(Account.create(
+                expect(user.accounts.create(
                   :name => ENV["account_name"],
                   :user_id => user.id
                 ).available_balance).to eql 0
@@ -37,9 +45,17 @@ RSpec.describe Account, :type => :model do
 
     describe ".portfolio" do
 
+        let(:user) {
+            User.create(
+                :name => ENV["valid_name"],
+                :email => ENV["valid_email"],
+                :password => ENV["password"]
+            )
+        }
+
         context "when called on account without portfolio" do
             it "returns nil" do
-                expect(Account.create(
+                expect(user.accounts.create(
                     :name => ENV["account_name"]
                 ).portfolio).to eql nil
             end

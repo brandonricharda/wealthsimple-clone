@@ -4,7 +4,7 @@ class Account < ApplicationRecord
 
     belongs_to :user
     has_many :holdings
-    has_one :portfolio 
+    has_one :portfolio
 
     def update_available_balance(amount)
         new_balance = self.available_balance + amount
