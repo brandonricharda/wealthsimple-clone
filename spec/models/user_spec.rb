@@ -18,12 +18,46 @@ RSpec.describe User, :type => :model do
             end
         end
 
-        context "when called with name and email" do
+        context "when called with just email" do
+            it "responds invalid" do
+                expect(User.new(
+                    :email => ENV["valid_email"]
+                )).to_not be_valid
+            end
+        end
+
+        context "when called with just password" do
+            it "responds invalid" do
+                expect(User.new(
+                    :password => ENV["password"]
+                ))
+            end
+        end
+
+        context "when called with just name and email" do
             it "responds invalid" do
                 expect(User.new(
                     :name => ENV["valid_name"],
                     :email => ENV["valid_email"],
                 )).to_not be_valid
+            end
+        end
+
+        context "when called with just name and password" do
+            it "responds invalid" do 
+                expect(User.new(
+                    :name => ENV["valid_name"],
+                    :password => ENV["password"]
+                )).to_not be_valid
+            end
+        end
+
+        context "when called with just email and password" do
+            it "responds invalid" do
+                expect(User.new(
+                    :email => ENV["valid_email"],
+                    :password => ENV["password"]
+                )).to be_valid
             end
         end
 
