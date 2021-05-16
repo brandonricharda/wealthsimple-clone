@@ -4,36 +4,40 @@ RSpec.describe Account, :type => :model do
 
     describe "#create" do
 
-        let(:user) {
-            User.create(
-                :name => ENV["valid_name"],
-                :email => ENV["valid_email"],
-                :password => ENV["password"]
-            )
-        }
+        let(:user) { User.create(
+            :name => ENV["valid_name"],
+            :email => ENV["valid_email"],
+            :password => ENV["password"]
+        ) }
 
-        context "when called without params" do
+        context "when called without name" do
+
+            let(:account) { user.accounts.create }
+
             it "doesn't create record" do
-                expect { user.accounts.create }.to_not change { Account.count }
+                expect { account }.to_not change { Account.count }
             end
+
+            it "returns one error" do
+                expect(account.errors.count).to eql 1
+            end
+
+            it "returns blank name error" do
+                expect(account.errors[:name].first).to eql "can't be blank"
+            end
+
         end
 
         context "when called with name" do
-            it "creates record" do
-                expect { user.accounts.create(
-                    :name => ENV["account_name"]
-                ) }.to change { Account.count }.by 1
-            end
-        end
 
-        context "when called with full params" do
+            let(:account) { user.accounts.create(:name => ENV["account_name"]) }
 
-            let(:account) { user.accounts.create(
-                :name => ENV["account_name"]
-            ) }
-            
             it "creates record" do
                 expect { account }.to change { Account.count }.by 1
+            end
+
+            it "returns no errors" do
+                expect(account.errors.count).to eql 0
             end
 
             it "sets default available balance of 0" do
@@ -42,6 +46,28 @@ RSpec.describe Account, :type => :model do
 
             it "sets default asset balance of 0" do
                 expect(account.asset_balance).to eql 0
+            end
+
+        end
+
+        context "when called with name and balances" do
+
+            let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000, :asset_balance => 1000) }
+
+            it "creates record" do
+                expect { account }.to change { Account.count }.by 1
+            end
+
+            it "returns no errors" do
+                expect(account.errors.count).to eql 0
+            end
+
+            it "sets available balance to input" do
+                expect(account.available_balance).to eql 1000
+            end
+
+            it "sets asset balance to input" do
+                expect(account.asset_balance).to eql 1000
             end
 
         end
@@ -80,7 +106,7 @@ RSpec.describe Account, :type => :model do
 
         context "when called with large negative number" do
             it "prohibits negative balance" do
-                expect { account.update_available_balance(-1000000000) }.to_not change { account.available_balance }
+                expect(account.update_available_balance(-1000000000)).to eql [false, "Transaction exceeds available balance"]
             end
         end
 
@@ -117,7 +143,7 @@ RSpec.describe Account, :type => :model do
 
         context "when called with large negative number" do
             it "prohibits negative balance" do
-                expect { account.update_asset_balance(-1000000000) }.to_not change { account.asset_balance }
+                expect(account.update_asset_balance(-1000000000)).to eql [false, "Transaction exceeds available balance"]
             end
         end
     end
