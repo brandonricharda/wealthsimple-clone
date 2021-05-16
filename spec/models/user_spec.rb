@@ -17,11 +17,11 @@ RSpec.describe User, :type => :model do
             end
 
             it "returns blank email error" do
-                expect(user.errors[:email].first).to eq "can't be blank"
+                expect(user.errors[:email].first).to eql "can't be blank"
             end
 
             it "returns blank password error" do
-                expect(user.errors[:password].first).to eq "can't be blank"
+                expect(user.errors[:password].first).to eql "can't be blank"
             end
 
         end
@@ -39,7 +39,7 @@ RSpec.describe User, :type => :model do
             end
 
             it "returns blank email error" do
-                expect(user.errors[:email].first).to eq "can't be blank"
+                expect(user.errors[:email].first).to eql "can't be blank"
             end
 
             it "returns blank password error" do
@@ -61,7 +61,7 @@ RSpec.describe User, :type => :model do
             end
 
             it "returns blank password error" do
-                expect(user.errors[:password].first).to eq "can't be blank"
+                expect(user.errors[:password].first).to eql "can't be blank"
             end
 
         end
@@ -79,7 +79,7 @@ RSpec.describe User, :type => :model do
             end
 
             it "returns blank email error" do
-                expect(user.errors[:email].first).to eq "can't be blank"
+                expect(user.errors[:email].first).to eql "can't be blank"
             end
 
         end
@@ -97,7 +97,7 @@ RSpec.describe User, :type => :model do
             end
 
             it "returns blank password error" do
-                expect(user.errors[:password].first).to eq "can't be blank"
+                expect(user.errors[:password].first).to eql "can't be blank"
             end
 
         end
@@ -115,7 +115,7 @@ RSpec.describe User, :type => :model do
             end
 
             it "returns blank email error" do
-                expect(user.errors[:email].first).to eq "can't be blank"
+                expect(user.errors[:email].first).to eql "can't be blank"
             end
 
         end
@@ -161,7 +161,7 @@ RSpec.describe User, :type => :model do
             it "sets default time horizon to 10" do
                 expect(user.time_horizon).to eql 10
             end
-            
+
         end
 
     end
