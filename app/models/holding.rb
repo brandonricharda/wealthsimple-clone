@@ -5,4 +5,8 @@ class Holding < ApplicationRecord
 
     belongs_to :asset
     belongs_to :account
+
+    def valuation
+        self.units * asset.price
+    end
 end
