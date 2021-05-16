@@ -22,14 +22,14 @@ RSpec.describe Holding, :type => :model do
         let(:large_account) {
             user.accounts.create(
                 :name => ENV["valid_name"],
-                :available_balance => ENV["large_balance"]
+                :available_balance => 1000000
             )
         }
 
         let(:small_account) {
             user.accounts.create(
                 :name => ENV["valid_name"],
-                :available_balance => ENV["small_balance"]
+                :available_balance => 100
             )
         }
 
@@ -65,13 +65,76 @@ RSpec.describe Holding, :type => :model do
             end
         end
 
+
+    end
+
+    describe "#create" do
+
+        let(:user) {
+            User.create(
+                :name => ENV["valid_name"],
+                :email => ENV["valid_email"],
+                :password => ENV["password"]
+            )
+        }
+
+        let(:account) {
+            user.accounts.create(
+                :name => ENV["valid_name"],
+                :available_balance => 500
+            )
+        }
+
+        let(:stock) {
+            Asset.create(
+                :ticker => "AAPL",
+                :price => 100
+            )
+        }
+
         context "when called with insufficient balance" do
             it "responds invalid" do
-                expect(Holding.new(
+                expect(Holding.create(
                     :asset_id => stock.id,
-                    :account_id => small_account.id,
+                    :account_id => account.id,
                     :units => 10
                 )).to_not be_valid
+            end
+        end
+
+    end
+
+    describe ".valuation" do
+
+        let(:user) {
+            User.create(
+                :name => ENV["valid_name"],
+                :email => ENV["valid_email"],
+                :password => ENV["password"]
+            )
+        }
+
+        let(:account) {
+            user.accounts.create(
+                :name => ENV["valid_name"],
+                :available_balance => 1000000
+            )
+        }
+
+        let(:stock) {
+            Asset.create(
+                :ticker => "AAPL",
+                :price => 100
+            )
+        }
+
+        context "when called" do
+            it "returns correct value of holding" do
+                expect(Holding.create(
+                    :asset_id => stock.id,
+                    :account_id => account.id,
+                    :units => 100
+                ).valuation).to eql 10000
             end
         end
     end
