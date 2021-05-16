@@ -22,14 +22,14 @@ RSpec.describe Holding, :type => :model do
         let(:large_account) {
             user.accounts.create(
                 :name => ENV["valid_name"],
-                :balance => ENV["large_balance"]
+                :available_balance => ENV["large_balance"]
             )
         }
 
         let(:small_account) {
             user.accounts.create(
                 :name => ENV["valid_name"],
-                :balance => ENV["small_balance"]
+                :available_balance => ENV["small_balance"]
             )
         }
 
