@@ -7,7 +7,12 @@ class Account < ApplicationRecord
     has_one :portfolio 
 
     def update_available_balance(amount)
-        new_balance = amount > 0 ? self.available_balance - amount : self.available_balance + amount
+        new_balance = self.available_balance + amount
         self.update(:available_balance => new_balance)
+    end
+
+    def update_asset_balance(amount)
+        new_balance = self.asset_balance + amount
+        self.update(:asset_balance => new_balance)
     end
 end

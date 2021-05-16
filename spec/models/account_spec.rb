@@ -47,7 +47,7 @@ RSpec.describe Account, :type => :model do
 
     end
 
-    describe ".update_balance" do
+    describe ".update_available_balance" do
 
         let(:user) {
             User.create(
@@ -65,12 +65,49 @@ RSpec.describe Account, :type => :model do
             )
         }
 
-        context "when called after transaction" do
-            it "updates available balance" do
+        context "when called with negative number" do
+            it "reduces available balance" do
                 expect { account.update_available_balance(-10000) }.to change { account.available_balance }.by(-10000)
             end
         end
 
+        context "when called with positive number" do
+            it "increases available balance" do
+                expect { account.update_available_balance(10000) }.to change { account.available_balance }.by(10000)
+            end
+        end
+
+    end
+
+    describe ".update_asset_balance" do
+
+        let(:user) {
+            User.create(
+                :name => ENV["valid_name"],
+                :email => ENV["valid_email"],
+                :password => ENV["password"]
+            )
+        }
+
+        let(:account) {
+            user.accounts.create(
+                :name => ENV["account_name"],
+                :user_id => user.id ,
+                :available_balance => 1000000
+            )
+        }
+
+        context "when called with negative number" do
+            it "increases asset balance" do
+                expect { account.update_asset_balance(-10000) }.to change { account.asset_balance }.by(-10000)
+            end
+        end
+
+        context "when called with positive number" do
+            it "increases asset balance" do
+                expect { account.update_asset_balance(10000) }.to change { account.asset_balance }.by(10000)
+            end
+        end
     end
 
 end
