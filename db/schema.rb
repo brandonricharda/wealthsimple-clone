@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_16_004939) do
+ActiveRecord::Schema.define(version: 2021_05_16_023741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
-    t.float "available_balance", default: 0.0
+    t.integer "available_balance", default: 0
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.float "asset_balance"
+    t.integer "asset_balance", default: 0
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
@@ -29,12 +29,12 @@ ActiveRecord::Schema.define(version: 2021_05_16_004939) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "ticker"
-    t.float "price"
+    t.integer "price"
   end
 
   create_table "holdings", force: :cascade do |t|
     t.bigint "asset_id"
-    t.float "units"
+    t.integer "units"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "account_id"
