@@ -7,5 +7,4 @@ class User < ApplicationRecord
   validates :name, presence: true
   
   has_many :accounts
-  has_many :holdings
 end

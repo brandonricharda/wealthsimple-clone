@@ -7,7 +7,7 @@ RSpec.describe Holding, :type => :model do
         let(:stock) {
             Asset.create(
                 :ticker => "AAPL",
-                :price => 123
+                :price => 100
             )
         }
 
@@ -16,6 +16,20 @@ RSpec.describe Holding, :type => :model do
                 :name => ENV["valid_name"],
                 :email => ENV["valid_email"],
                 :password => ENV["password"]
+            )
+        }
+
+        let(:large_account) {
+            user.accounts.create(
+                :name => ENV["valid_name"],
+                :balance => ENV["large_balance"]
+            )
+        }
+
+        let(:small_account) {
+            user.accounts.create(
+                :name => ENV["valid_name"],
+                :balance => ENV["small_balance"]
             )
         }
 
@@ -28,7 +42,15 @@ RSpec.describe Holding, :type => :model do
         context "when called with just stock" do
             it "responds invalid" do
                 expect(Holding.new(
-                    :asset_id => stock.id,
+                    :asset_id => stock.id
+                )).to_not be_valid
+            end
+        end
+
+        context "when called with just account" do
+            it "responds invalid" do
+                expect(Holding.new(
+                    :account_id => large_account.id
                 )).to_not be_valid
             end
         end
@@ -37,8 +59,19 @@ RSpec.describe Holding, :type => :model do
             it "responds valid" do
                 expect(Holding.new(
                     :asset_id => stock.id,
-                    :user_id => user.id
+                    :account_id => large_account.id,
+                    :units => 5
                 )).to be_valid
+            end
+        end
+
+        context "when called with insufficient balance" do
+            it "responds invalid" do
+                expect(Holding.new(
+                    :asset_id => stock.id,
+                    :account_id => small_account.id,
+                    :units => 10
+                )).to_not be_valid
             end
         end
     end
