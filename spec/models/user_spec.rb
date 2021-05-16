@@ -22,8 +22,18 @@ RSpec.describe User, :type => :model do
             it "responds invalid" do
                 expect(User.new(
                     :name => ENV["valid_name"],
-                    :email => ENV["valid_email"]
+                    :email => ENV["valid_email"],
                 )).to_not be_valid
+            end
+        end
+
+        context "when called with all data" do
+            it "responds valid" do
+                expect(User.new(
+                    :name => ENV["valid_name"],
+                    :email => ENV["valid_email"],
+                    :password => ENV["password"]
+                )).to be_valid
             end
         end
 
@@ -35,7 +45,8 @@ RSpec.describe User, :type => :model do
 
             let(:user) { User.create(
                 :name => ENV["valid_name"],
-                :email => ENV["valid_email"]
+                :email => ENV["valid_email"],
+                :password => ENV["password"]
             ) }
             
             it "sets default risk tolerance to 0" do
