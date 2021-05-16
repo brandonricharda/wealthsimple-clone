@@ -13,7 +13,7 @@ RSpec.describe Asset, :type => :model do
         context "when called without ticker" do
             it "responds invalid" do
                 expect(Asset.new(
-                    :price => 123
+                    :price => 100
                 )).to_not be_valid
             end
         end
@@ -21,7 +21,7 @@ RSpec.describe Asset, :type => :model do
         context "when called with data" do
             it "responds valid" do
                 expect(Asset.new(
-                    :price => 123,
+                    :price => 100,
                     :ticker => "AAPL"
                 )).to be_valid
             end
