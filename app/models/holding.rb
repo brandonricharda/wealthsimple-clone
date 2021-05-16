@@ -1,7 +1,5 @@
 class Holding < ApplicationRecord
-    validates :asset_id, presence: true
-    validates :account_id, presence: true
-    validates_with BalanceValidator
+    validates_with HoldingValidator
 
     belongs_to :asset
     belongs_to :account
