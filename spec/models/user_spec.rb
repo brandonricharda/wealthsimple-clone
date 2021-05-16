@@ -73,4 +73,17 @@ RSpec.describe User, :type => :model do
 
     end
 
+    describe ".holdings" do
+
+        context "when called on new user" do
+            it "returns empty array" do
+                expect(User.create(
+                    :name => ENV["valid_name"],
+                    :email => ENV["valid_email"]
+                ).holdings.count).to eql 0
+            end
+        end
+
+    end
+
 end
