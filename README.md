@@ -1,24 +1,9 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a clone of Wealthsimple (the popular Canadian robo-advisor app) built in Rails 6. Upon completion, it will let the user:
 
-Things you may want to cover:
+- Create an account
+- Complete a survey that sets their risk tolerance
+- Create mock deposits
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+The app will automatically convert the user's deposits into holdings based on their risk tolerance.
