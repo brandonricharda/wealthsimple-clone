@@ -4,11 +4,7 @@ RSpec.describe Account, :type => :model do
 
     describe "#create" do
 
-        let(:user) { User.create(
-            :name => ENV["valid_name"],
-            :email => ENV["valid_email"],
-            :password => ENV["password"]
-        ) }
+        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
 
         context "when called without name" do
 
@@ -76,21 +72,9 @@ RSpec.describe Account, :type => :model do
 
     describe ".update_available_balance" do
 
-        let(:user) {
-            User.create(
-                :name => ENV["valid_name"],
-                :email => ENV["valid_email"],
-                :password => ENV["password"]
-            )
-        }
+        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
 
-        let(:account) {
-            user.accounts.create(
-                :name => ENV["account_name"],
-                :user_id => user.id ,
-                :available_balance => 1000000
-            )
-        }
+        let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000000) }
 
         context "when called with negative number" do
             it "reduces available balance" do
@@ -114,20 +98,9 @@ RSpec.describe Account, :type => :model do
 
     describe ".update_asset_balance" do
 
-        let(:user) {
-            User.create(
-                :name => ENV["valid_name"],
-                :email => ENV["valid_email"],
-                :password => ENV["password"]
-            )
-        }
+        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
 
-        let(:account) {
-            user.accounts.create(
-                :name => ENV["account_name"],
-                :asset_balance => 1000000
-            )
-        }
+        let(:account) { user.accounts.create(:name => ENV["account_name"], :asset_balance => 1000000) }
 
         context "when called with negative number" do
             it "decreases asset balance" do
