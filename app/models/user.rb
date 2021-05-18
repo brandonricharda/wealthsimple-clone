@@ -3,8 +3,9 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
     devise :database_authenticatable, :registerable,
             :recoverable, :rememberable, :validatable
-  
-    has_many :accounts
+    
+    validates :name, presence: true
+    validates :risk_tolerance, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }, allow_blank: true
 
-    validates_with RiskToleranceValidator
+    has_many :accounts
 end
