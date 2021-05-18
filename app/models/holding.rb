@@ -1,11 +1,13 @@
 class Holding < ApplicationRecord
-    validates_with HoldingValidator
-
     belongs_to :asset
     belongs_to :account
 
     after_create :update_account_balances
 
+    validates :units, presence: true
+    validate :verify_balance
+    validate :check_risk_tolerance
+    
     def valuation
         self.units * asset.price
     end
@@ -15,4 +17,23 @@ class Holding < ApplicationRecord
         self.account.update_available_balance(-change)
         self.account.update_asset_balance(change)
     end
+
+    private
+
+    def verify_balance
+        return if self.account == nil || self.asset == nil
+        errors.add(:units, "exceeds available balance") if self.valuation > self.account.available_balance
+    end
+
+    def check_risk_tolerance
+        return if self.account == nil
+
+        if self.account.user.risk_tolerance == nil
+            errors.add(:base, "user risk tolerance missing")
+        elsif self.account.user.risk_tolerance < self.asset.riskiness
+            errors.add(:base, "exceeds user risk tolerance")
+        end
+
+    end
+
 end

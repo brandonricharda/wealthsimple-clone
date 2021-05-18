@@ -2,13 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Holding, :type => :model do
 
-    describe "#create" do
+    describe "create" do
 
-        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 1) }
+        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 5) }
 
-        let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 100) }
+        let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000) }
 
-        let(:stock) { Asset.create(:ticker => "SPY", :price => 100, :riskiness => 1) }
+        let(:stock) { Asset.create(:ticker => "SPY", :price => 100, :riskiness => 5) }
 
         context "when called with no params" do
 
@@ -23,7 +23,7 @@ RSpec.describe Holding, :type => :model do
             end
 
             it "returns blank units error" do
-                expect(holding.errors[:base].first).to eql "Transaction must specify number of units."
+                expect(holding.errors[:units].first).to eql "can't be blank"
             end
 
             it "returns blank account error" do
@@ -36,99 +36,7 @@ RSpec.describe Holding, :type => :model do
 
         end
 
-        context "when called with insufficient balance" do
-
-            let(:holding) { account.holdings.create(:asset_id => stock.id, :account_id => account.id, :units => 100) }
-
-            it "doesn't create record" do
-                expect { holding }.to_not change { Holding.count }
-            end
-
-            it "returns one error" do
-                expect(holding.errors.count).to eql 1
-            end
-
-            it "returns insufficient balance error" do
-                expect(holding.errors[:base].first).to eql "Transaction amount exceeds available balance."
-            end
-
-        end
-
-        context "when added to user with wrong risk tolerance" do
-
-            let(:risky_stock) { Asset.create(:ticker => "TSLA", :price => 100, :riskiness => 5) }
-
-            let(:holding) { account.holdings.create(:asset_id => risky_stock.id, :units => 1) }
-
-            it "doesn't create record" do
-                expect { holding }.to_not change { Holding.count }
-            end
-
-            it "returns one error" do
-                expect(holding.errors.count).to eql 1
-            end
-
-            it "returns excessive riskiness error" do
-                expect(holding.errors[:base].first).to eql "Transaction exceeds user's risk tolerance."
-            end
-
-        end
-
-        context "when added with wrong risk and NSF" do
-
-            let(:risky_stock) { Asset.create(:ticker => "TSLA", :price => 100, :riskiness => 5) }
-
-            let(:holding) { account.holdings.create(:asset_id => risky_stock.id, :units => 100) }
-
-            it "doesn't create record" do
-                expect { holding }.to_not change { Holding.count }
-            end
-
-            it "returns two errors" do
-                expect(holding.errors.count).to eql 2
-            end
-
-            it "returns excessive riskiness error" do
-                expect(holding.errors[:base].first).to eql "Transaction exceeds user's risk tolerance."
-            end
-
-            it "returns insufficient balance error" do
-                expect(holding.errors[:base].last).to eql "Transaction amount exceeds available balance."
-            end
-
-        end
-
-        context "when added to user with no risk tolerance" do
-
-            let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
-
-            let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 100) }
-
-            let(:stock) { Asset.create(:ticker => "AAPL", :price => 100, :riskiness => 5) }
-
-            let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 10) }
-
-            it "doesn't create record" do
-                expect { holding }.to_not change { Holding.count }
-            end
-
-            it "returns one error" do
-                expect(holding.errors.count).to eql 1
-            end
-
-            it "returns no risk tolerance error" do
-                expect(holding.errors[:base].first).to eql "User has no set risk tolerance."
-            end
-
-        end
-
-        context "when called with correct params" do
-
-            let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 5) }
-
-            let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000) }
-
-            let(:stock) { Asset.create(:ticker => "AAPL", :price => 100, :riskiness => 5) }
+        context "when called with required params" do
 
             let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 10) }
 
@@ -136,16 +44,68 @@ RSpec.describe Holding, :type => :model do
                 expect { holding }.to change { Holding.count }
             end
 
-            it "returns zero errors" do
+            it "returns no errors" do
                 expect(holding.errors.count).to eql 0
             end
 
-            it "adjusts available balance correctly" do
-                expect { holding }.to change { account.available_balance }.by -1000
+        end
+
+        context "when called with insufficient balance" do
+
+            let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 1000) }
+
+            it "doesn't create record" do
+                expect { holding }.to_not change { Holding.count }
             end
 
-            it "adjusts asset balance correctly" do
-                expect { holding }.to change { account.asset_balance }.by 1000
+            it "returns one error" do
+                expect(holding.errors.count).to eql 1
+            end
+
+            it "returns transaction limit error" do
+                expect(holding.errors[:units].first).to eql "exceeds available balance"
+            end
+
+        end
+
+        context "when added to user without risk tolerance" do
+
+            let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
+
+            let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000) }
+
+            let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 10) }
+
+            it "doesn't create record" do
+                expect { holding }.to_not change { Holding.count }
+            end
+
+            it "returns one error" do
+                expect(holding.errors.count).to eql 1
+            end
+
+            it "returns risk tolerance missing error" do
+                expect(holding.errors[:base].first).to eql "user risk tolerance missing"
+            end
+
+        end
+
+        context "when too risky for user" do
+
+            let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 1) }
+
+            let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 10) }
+
+            it "doesn't create record" do
+                expect { holding }.to_not change { Holding.count }
+            end
+
+            it "returns one error" do
+                expect(holding.errors.count).to eql 1
+            end
+
+            it "returns excessive risk error" do
+                expect(holding.errors[:base].first).to eql "exceeds user risk tolerance"
             end
 
         end
