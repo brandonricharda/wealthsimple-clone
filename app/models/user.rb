@@ -5,5 +5,6 @@ class User < ApplicationRecord
             :recoverable, :rememberable, :validatable
   
     has_many :accounts
+
     validates_with RiskToleranceValidator
 end

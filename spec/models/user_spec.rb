@@ -165,7 +165,7 @@ RSpec.describe User, :type => :model do
             end
 
             it "returns faulty risk tolerance error" do
-                expect(user.errors[:risk_tolerance].first).to eql "Risk tolerance falls outside (1..5) range."
+                expect(user.errors[:risk_tolerance].first).to eql "Falls outside (1..5) range."
             end
 
         end
@@ -179,7 +179,7 @@ RSpec.describe User, :type => :model do
             end
 
             it "returns faulty risk tolerance error" do
-                expect(user.errors[:risk_tolerance].first).to eql "Risk tolerance falls outside (1..5) range."
+                expect(user.errors[:risk_tolerance].first).to eql "Falls outside (1..5) range."
             end
 
         end
