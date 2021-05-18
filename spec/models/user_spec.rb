@@ -135,10 +135,6 @@ RSpec.describe User, :type => :model do
             it "sets default risk tolerance to 0" do
                 expect(user.risk_tolerance).to eql 0
             end
-
-            it "sets default time horizon to 10" do
-                expect(user.time_horizon).to eql 10
-            end
             
         end
 
@@ -156,10 +152,6 @@ RSpec.describe User, :type => :model do
             
             it "sets default risk tolerance to 0" do
                 expect(user.risk_tolerance).to eql 0
-            end
-
-            it "sets default time horizon to 10" do
-                expect(user.time_horizon).to eql 10
             end
 
         end
