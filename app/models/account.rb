@@ -3,6 +3,7 @@ class Account < ApplicationRecord
 
     belongs_to :user
     has_many :holdings
+    has_many :transactions
 
     def deposit(amount)
         return false, "Deposit amount cannot be negative" if amount < 0
