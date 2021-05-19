@@ -2,7 +2,7 @@ class Account < ApplicationRecord
     validates :name, presence: true
 
     belongs_to :user
-    has_many :holdings
+    has_one :holding
     has_many :transactions
 
     def deposit(amount)

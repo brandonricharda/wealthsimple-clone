@@ -38,7 +38,7 @@ RSpec.describe Holding, :type => :model do
 
         context "when called with required params" do
 
-            let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 10) }
+            let(:holding) { account.create_holding(:asset_id => stock.id, :units => 10) }
 
             it "creates record" do
                 expect { holding }.to change { Holding.count }
@@ -52,7 +52,7 @@ RSpec.describe Holding, :type => :model do
 
         context "when called with insufficient balance" do
 
-            let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 1000) }
+            let(:holding) { account.create_holding(:asset_id => stock.id, :units => 1000) }
 
             it "doesn't create record" do
                 expect { holding }.to_not change { Holding.count }
@@ -74,7 +74,7 @@ RSpec.describe Holding, :type => :model do
 
             let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000) }
 
-            let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 10) }
+            let(:holding) { account.create_holding(:asset_id => stock.id, :units => 10) }
 
             it "doesn't create record" do
                 expect { holding }.to_not change { Holding.count }
@@ -94,7 +94,7 @@ RSpec.describe Holding, :type => :model do
 
             let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 1) }
 
-            let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 10) }
+            let(:holding) { account.create_holding(:asset_id => stock.id, :units => 10) }
 
             it "doesn't create record" do
                 expect { holding }.to_not change { Holding.count }
@@ -122,7 +122,7 @@ RSpec.describe Holding, :type => :model do
 
             let(:stock) { Asset.create(:ticker => "AAPL", :price => 100, :riskiness => 5) }
 
-            let(:holding) { account.holdings.create(:asset_id => stock.id, :units => 10) }
+            let(:holding) { account.create_holding(:asset_id => stock.id, :units => 10) }
 
             it "returns correct valuation of holding" do
                 expect(holding.valuation).to eql 1000
