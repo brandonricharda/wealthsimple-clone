@@ -16,7 +16,7 @@ RSpec.describe Transaction, :type => :model do
                 expect { transaction }.to_not change { Transaction.count }
             end
 
-            it "returns three errors" do
+            it "returns four errors" do
                 expect(transaction.errors.count).to eql 4
             end
 
@@ -52,22 +52,54 @@ RSpec.describe Transaction, :type => :model do
 
         end
 
-        context "when called with description" do
+        context "when called with allowed descriptions" do
 
             it "accepts Investment" do
-                expect { account.transactions.create(:amount => 1000, :description => "Investment") }.to change { Account.count }.by 1
+                expect { account.transactions.create(:amount => 1000, :description => "Investment") }.to change { Transaction.count }.by 1
             end
 
             it "accepts Deposit" do
-                expect { account.transactions.create(:amount => 1000, :description => "Deposit") }.to change { Account.count }.by 1
+                expect { account.transactions.create(:amount => 1000, :description => "Deposit") }.to change { Transaction.count }.by 1
             end
 
             it "accepts Withdrawal" do
-                expect { account.transactions.create(:amount => 1000, :description => "Withdrawal") }.to change { Account.count }.by 1
+                expect { account.transactions.create(:amount => 1000, :description => "Withdrawal") }.to change { Transaction.count }.by 1
+            end
+
+            it "accepts Asset Sale" do
+                expect { account.transactions.create(:amount => 1000, :description => "Asset Sale") }.to change { Transaction.count }.by 1
             end
 
             it "rejects anything else" do
                 expect { account.transactions.create(:amount => 1000, :description => "anything else") }.to_not change { Transaction.count }
+            end
+
+        end
+
+        context "when called with excessive Withdrawal" do
+
+            let(:transaction) { account.transactions.create(:amount => 100000, :description => "Withdrawal") }
+
+            it "doesn't create record" do
+                expect { transaction }.to_not change { Transaction.count }
+            end
+
+            it "returns excessive withdrawal error" do
+                expect(transaction.errors[:amount].first).to eql "exceeds available balance"
+            end
+
+        end
+
+        context "when called with excessive Asset Sale" do
+
+            let(:transaction) { account.transactions.create(:amount => 100000, :description => "Asset Sale") }
+
+            it "doesn't create record" do
+                expect { transaction }.to_not change { Transaction.count }
+            end
+
+            it "returns excessive asset sale error" do
+                expect(transaction.errors[:amount].first).to eql "exceeds asset balance"
             end
 
         end
