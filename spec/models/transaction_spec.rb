@@ -8,6 +8,10 @@ RSpec.describe Transaction, :type => :model do
 
         let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000, :asset_balance => 1000) }
 
+        let(:stock) { Asset.create(:ticker => "SPY", :price => 100, :riskiness => 5) }
+
+        let(:holding) { account.create_holding(:asset_id => stock.id, :units => 10) }
+
         context "when called with no params" do
 
             let(:transaction) { Transaction.create }
@@ -100,6 +104,56 @@ RSpec.describe Transaction, :type => :model do
 
             it "returns excessive asset sale error" do
                 expect(transaction.errors[:amount].first).to eql "exceeds asset balance"
+            end
+
+        end
+
+        context "when called with allowable Withdrawal" do
+
+            let(:transaction) { account.transactions.create(:amount => 500, :description => "Withdrawal") }
+
+            it "creates record" do
+                expect { transaction }.to change { Transaction.count }.by 1
+            end
+
+            it "adjusts available balance" do
+                expect { transaction }.to change { account.available_balance }.by -500
+            end
+
+        end
+
+        context "when called with allowable Asset Sale" do
+
+            let(:transaction) { account.transactions.create(:amount => 500, :description => "Asset Sale") }
+
+            it "creates record" do
+                expect { transaction }.to change { Transaction.count }.by 1
+            end
+
+            it "adjusts asset balance" do
+                expect { transaction }.to change { account.asset_balance }.by -500
+            end
+
+            it "adjusts available balance" do
+                expect { transaction }.to change { account.available_balance }.by 500
+            end
+
+        end
+
+        context "when called with allowable Investment" do
+
+            let(:transaction) { account.transactions.create(:amount => 500, :description => "Investment") }
+
+            it "creates record" do
+                expect { transaction }.to change { Transaction.count }
+            end
+
+            it "adjusts asset balance" do
+                expect { transaction }.to change { account.asset_balance }.by 500
+            end
+
+            it "adjusts available balance" do
+                expect { transaction }.to change { account.available_balance }.by -500
             end
 
         end
