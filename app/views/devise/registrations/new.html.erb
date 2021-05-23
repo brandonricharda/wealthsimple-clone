@@ -1,0 +1,25 @@
+<div class="columns has-text-centered">
+    <div class="column"></div>
+    <div class="column">
+        <div class="box">
+            <h2 class="title is-3">Get started with Wealthsimple</h2>
+            <%= form_for @user do |f| %>
+                <%= render "devise/shared/error_messages", resource: resource %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "input mb-4" %>
+                <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "Name", class: "input mb-4" %>
+                <%= f.password_field :password, autocomplete: "new-password", placeholder: "Password", class: "input mb-4" %>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Password Confirmation", class: "input mb-4" %>
+                
+                <h3 class="title is-5 mb-5">How would you rate your risk tolerance?</h3>
+                <h4 class="subtitle is-6 mb-4">(1 being lowest, 5 being highest)</h4>
+                <div class="select is-fullwidth mb-4">
+                    <%= f.select :risk_tolerance, options_for_select([1, 2, 3, 4, 5]) %>
+                </div>
+                
+                <%= f.submit "Sign up", class: "button is-warning is-rounded mb-4" %>
+            <% end %>
+            <%= render "devise/shared/links" %>
+        </div>
+    </div>
+    <div class="column"></div>
+</div>

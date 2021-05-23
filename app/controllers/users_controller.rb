@@ -5,4 +5,9 @@ class UsersController < ApplicationController
         @accounts = @user.accounts
     end
 
+    def new
+        @user = User.new
+    end
+
+
 end

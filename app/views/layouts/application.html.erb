@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>WealthsimpleClone</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <head>
+        <title>WealthsimpleClone</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <%= csrf_meta_tags %>
+        <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+        <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    </head>
 
-  <body>
-    <%= yield %>
+    <body>
+
+        <% if !current_page?(controller: 'pages', action: 'home') %>
+            <nav class="navbar p-5 mb-4" role="navigation">
+                <div class="navbar-brand"><div class="navbar-item"><img src="https://www.wealthsimple.com/static/ws-wordmark-7a6a6ea384e8586aaeb2597547f86158.svg"></div></div>
+            </nav>
+        <% end %>
+
+        <%= yield %>
+
   </body>
 </html>
