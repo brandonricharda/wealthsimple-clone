@@ -1,2 +1,0 @@
-class RiskProfile < ApplicationRecord
-end
