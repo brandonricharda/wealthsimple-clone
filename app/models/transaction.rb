@@ -21,24 +21,22 @@ class Transaction < ApplicationRecord
             new_asset_balance = self.account.asset_balance + (self.amount - leftover)
             new_available_balance = self.account.available_balance - (self.amount - leftover)
             self.account.update(:asset_balance => new_asset_balance, :available_balance => new_available_balance)
+        elsif self.description == "Deposit"
+            new_available_balance = self.account.available_balance + self.amount
+            self.account.update(:available_balance => new_available_balance)
         end
     end
 
     def update_holding
-
         if self.description == "Asset Sale" || self.description == "Investment"
             asset_price = self.account.holding.asset.price
             transaction_amount = self.amount
-
             units_transacted = transaction_amount / asset_price
             leftover = transaction_amount % asset_price
-
             new_units = self.description == "Asset Sale" ? self.account.holding.units - units_transacted : self.account.holding.units + units_transacted
             self.account.holding.update(:units => new_units)
         end
-        
         update_account(leftover)
-
     end
 
     private

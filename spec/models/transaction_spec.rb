@@ -238,6 +238,24 @@ RSpec.describe Transaction, :type => :model do
 
         end
 
+        context "when called with deposit" do
+
+            let(:transaction) { account.transactions.create(:amount => 1000, :description => "Deposit") }
+
+            it "creates record" do
+                expect { transaction }.to change { Transaction.count }.by 1
+            end
+
+            it "returns zero errors" do
+                expect(transaction.errors.count).to eql 0
+            end
+
+            it "changes available balance" do
+                expect { transaction }.to change { account.available_balance }.by 1000
+            end
+
+        end
+
     end
 
 end
