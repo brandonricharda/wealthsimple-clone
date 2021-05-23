@@ -5,6 +5,13 @@ class Account < ApplicationRecord
     has_one :holding
     has_many :transactions
 
+    after_create :add_holding
+
+    def rebalance
+        return if self.available_balance == 0
+        self.transactions.create(:amount => self.available_balance, :description => "Investment")
+    end
+
     def update_available_balance(amount)
         new_balance = self.available_balance + amount
         return false, "Transaction exceeds available balance" if new_balance < 0
@@ -16,4 +23,12 @@ class Account < ApplicationRecord
         return false, "Transaction exceeds available balance" if new_balance < 0
         self.update(:asset_balance => new_balance)
     end
+
+    def add_holding
+        return if Asset.count == 0
+        asset = Asset.where(riskiness: self.user.risk_tolerance).first
+        return if asset == nil
+        self.create_holding(:asset_id => asset.id, :units => 0)
+    end
+
 end

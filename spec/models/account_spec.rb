@@ -4,7 +4,7 @@ RSpec.describe Account, :type => :model do
 
     describe "#create" do
 
-        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
+        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 5) }
 
         context "when called without name" do
 
@@ -27,6 +27,7 @@ RSpec.describe Account, :type => :model do
         context "when called with name" do
 
             let(:account) { user.accounts.create(:name => ENV["account_name"]) }
+            let!(:asset) { Asset.create(:ticker => "AAPL", :price => 100, :riskiness => 5) }
 
             it "creates record" do
                 expect { account }.to change { Account.count }.by 1
@@ -42,6 +43,10 @@ RSpec.describe Account, :type => :model do
 
             it "sets default asset balance of 0" do
                 expect(account.asset_balance).to eql 0
+            end
+
+            it "creates holding" do
+                expect { account }.to change { Holding.count }
             end
 
         end
@@ -72,7 +77,7 @@ RSpec.describe Account, :type => :model do
 
     describe ".update_available_balance" do
 
-        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
+        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 5) }
 
         let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000000) }
 
@@ -98,7 +103,7 @@ RSpec.describe Account, :type => :model do
 
     describe ".update_asset_balance" do
 
-        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
+        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 5) }
 
         let(:account) { user.accounts.create(:name => ENV["account_name"], :asset_balance => 1000000) }
 
@@ -119,6 +124,38 @@ RSpec.describe Account, :type => :model do
                 expect(account.update_asset_balance(-1000000000)).to eql [false, "Transaction exceeds available balance"]
             end
         end
+    end
+
+    describe ".rebalance" do
+
+        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 5) }
+
+        let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000) }
+
+        let(:stock) { Asset.create(:ticker => "SPY", :price => 1, :riskiness => 5) }
+
+        let!(:holding) { account.create_holding(:asset_id => stock.id, :units => 0) }
+
+        context "when called on account with available balance" do
+            it "buys however many stocks it can" do
+                expect { account.rebalance }.to change { account.available_balance }.by -1000
+            end
+        end
+
+        context "when called on account with no balance" do
+
+            let(:account) { user.accounts.create(:name => ENV["account_name"]) }
+
+            it "doesn't do anything" do
+                expect { account.rebalance }.to_not change { account.available_balance }
+            end
+            
+        end
+
+    end
+
+    describe ".add_holding" do
+
     end
 
 end
