@@ -13,8 +13,8 @@
 
     <div class="navbar-menu">
         <div class="navbar-end">
-            <button class="button" style="border: none">Log in</button>
-            <button class="button is-warning is-rounded">Get started</button>
+            <%= button_to("Log in", user_session_path, :method => :get, class: "button", style: "border: none")  %>
+            <%= button_to("Get started", new_registration_path(@user), :method => :get, class: "button is-warning is-rounded")  %>
         </div>
     </div>
 </nav>
@@ -23,7 +23,7 @@
     <div class="column p-6">
         <h2 class="title is-1 mb-6">Get rich slow</h2>
         <h3 class="subtitle is-4">Powerful financial tools to help you grow and manage your money</h2>
-        <button class="button is-warning is-rounded is-large">Get started</button>
+        <%= button_to("Get started", new_registration_path(@user), :method => :get, class: "button is-warning is-rounded is-large")  %>
     </div>
     <div class="column">
         <video autoplay loop>

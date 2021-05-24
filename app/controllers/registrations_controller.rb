@@ -11,7 +11,7 @@ class RegistrationsController < Devise::RegistrationsController
         @user = User.new(user_params)
         respond_to do |format|
             if @user.save
-                format.html { redirect_to @user }
+                format.html { redirect_to user_session_path }
             else
                 format.html { redirect_to request.referrer }
             end
