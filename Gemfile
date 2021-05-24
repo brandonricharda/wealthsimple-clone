@@ -30,6 +30,10 @@ gem 'rexml'
 # For environment variable configuration
 gem "figaro"
 
+# For display charts
+gem "chartkick"
+gem 'groupdate'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

@@ -51,7 +51,13 @@
     </div>
     <div class="column">
         <div class="box">
+            <h2 class="title is-2 mb-6">Deposit insights</h2>
+            <%= column_chart @account.transactions.where(:description => "Deposit").group_by_day(:created_at).sum(:amount), colors:["#387474"] %>
+        </div>
+
+        <div class="box">
             <h2 class="title is-2 mb-6">Portfolio</h2>
+
             <div class="columns">
                 <div class="column">
                     <h3 class="title is-6 mb-4">Asset</h3>
@@ -66,6 +72,7 @@
                     <%= @holding.asset.riskiness %>
                 </div>
             </div>
+
             <div class="columns">
                 <div class="column">
                     Cash
@@ -77,6 +84,7 @@
                     <%= 0 %>
                 </div>
             </div>
+
         </div>
     </div>
     <div class="column"></div>
