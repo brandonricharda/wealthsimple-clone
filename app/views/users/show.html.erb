@@ -25,6 +25,8 @@
                     <%= button_to("See account", account, :method => :get, class: "button is-warning is-rounded")  %>
                 </div>
             <% end %>
+
+            <%= button_to("Open a new account", new_account_path, :method => :get, class: "button is-black is-rounded")  %>
         <% else %>
             <div class="box">
                 <h2 class="title is-3">You have no accounts yet</h2>
