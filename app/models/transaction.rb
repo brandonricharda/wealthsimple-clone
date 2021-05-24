@@ -24,6 +24,7 @@ class Transaction < ApplicationRecord
         elsif self.description == "Deposit"
             new_available_balance = self.account.available_balance + self.amount
             self.account.update(:available_balance => new_available_balance)
+            self.account.rebalance
         end
     end
 

@@ -4,13 +4,11 @@ RSpec.describe Transaction, :type => :model do
 
     describe "#create" do
 
-        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
+        let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 5) }
 
         let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000, :asset_balance => 1000) }
 
-        let(:stock) { Asset.create(:ticker => "SPY", :price => 100, :riskiness => 5) }
-
-        let!(:holding) { account.create_holding(:asset_id => stock.id, :units => 10) }
+        let!(:asset) { Asset.create(:ticker => "AAPL", :price => 100, :riskiness => 5) }
 
         context "when called with no params" do
 
@@ -49,21 +47,18 @@ RSpec.describe Transaction, :type => :model do
             it "creates record" do
                 expect { transaction }.to change { Transaction.count }
             end
-            
-            it "returns zero errors" do
-                expect(transaction.errors.count).to eql 0
-            end
 
         end
 
-        context "when called with allowed descriptions" do
+        context "when called with description" do
 
             it "accepts Investment" do
                 expect { account.transactions.create(:amount => 1000, :description => "Investment") }.to change { Transaction.count }.by 1
             end
 
             it "accepts Deposit" do
-                expect { account.transactions.create(:amount => 1000, :description => "Deposit") }.to change { Transaction.count }.by 1
+                # Changes by 2 because Account callback automatically generates Investment after deposit
+                expect { account.transactions.create(:amount => 1000, :description => "Deposit") }.to change { Transaction.count }.by 2
             end
 
             it "accepts Withdrawal" do
@@ -139,7 +134,7 @@ RSpec.describe Transaction, :type => :model do
             end
 
             it "adjusts holding balance" do
-                expect { transaction }.to change { holding.units }.by -5
+                expect { transaction }.to change { account.holding.units }.by -5
             end
 
         end
@@ -161,7 +156,7 @@ RSpec.describe Transaction, :type => :model do
             end
 
             it "adjusts holding units" do
-                expect { transaction }.to change { holding.units }.by 5
+                expect { transaction }.to change { account.holding.units }.by 5
             end
 
         end
@@ -243,15 +238,12 @@ RSpec.describe Transaction, :type => :model do
             let(:transaction) { account.transactions.create(:amount => 1000, :description => "Deposit") }
 
             it "creates record" do
-                expect { transaction }.to change { Transaction.count }.by 1
+                expect { transaction }.to change { Transaction.count }.by 2
             end
 
-            it "returns zero errors" do
-                expect(transaction.errors.count).to eql 0
-            end
-
-            it "changes available balance" do
-                expect { transaction }.to change { account.available_balance }.by 1000
+            it "changes asset balance" do
+                # Changes by 2000 because the account had 1000 to begin with and both get transacted
+                expect { transaction }.to change { account.asset_balance }.by 2000
             end
 
         end

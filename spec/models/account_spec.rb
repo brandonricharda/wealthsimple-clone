@@ -153,9 +153,4 @@ RSpec.describe Account, :type => :model do
         end
 
     end
-
-    describe ".add_holding" do
-
-    end
-
 end

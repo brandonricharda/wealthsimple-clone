@@ -68,28 +68,6 @@ RSpec.describe Holding, :type => :model do
 
         end
 
-        context "when added to user without risk tolerance" do
-
-            let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
-
-            let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 1000) }
-
-            let(:holding) { account.create_holding(:asset_id => stock.id, :units => 10) }
-
-            it "doesn't create record" do
-                expect { holding }.to_not change { Holding.count }
-            end
-
-            it "returns one error" do
-                expect(holding.errors.count).to eql 1
-            end
-
-            it "returns risk tolerance missing error" do
-                expect(holding.errors[:base].first).to eql "user risk tolerance missing"
-            end
-
-        end
-
         context "when too risky for user" do
 
             let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 1) }
@@ -116,7 +94,7 @@ RSpec.describe Holding, :type => :model do
 
         context "when called" do
 
-            let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"]) }
+            let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 5) }
 
             let(:account) { user.accounts.create(:name => ENV["account_name"], :available_balance => 100) }
 
