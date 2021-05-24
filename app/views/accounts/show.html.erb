@@ -25,11 +25,11 @@
         <% if @account.transactions.count > 0 %>
             <div class="box">
                 <h2 class="title is-2 mb-6">Transactions</h2>
-                <% @account.transactions.each do |transaction| %>
+                <% @transactions.each do |transaction| %>
                     <div class="columns">
                         <div class="column">
                             <h3 class="title is-6 mb-4">Date</h3>
-                            <%= transaction.created_at.strftime("%Y-%d-%m") %>
+                            <%= transaction.created_at.strftime('%a, %d %b %Y %H:%M:%S') %>
                         </div>
                         <div class="column">
                             <h3 class="title is-6 mb-4">Type</h3>
