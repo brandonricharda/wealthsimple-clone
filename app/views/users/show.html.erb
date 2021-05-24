@@ -1,9 +1,24 @@
+<%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+
 <div class="columns has-text-centered mt-5">
     <div class="column"></div>
     <div class="column">
         <h4 class="subtitle is-6 mt-6">Hello <%= current_user.name %>, you have</h4>
         <h2 class="title is-1">$<%= current_user.total_balance %></h2>
+    </div>
+    <div class="column"></div>
+</div>
 
+<%= area_chart @user.balance_history, colors:["#ffdd57"], curve: false, discrete: true, library: {
+    hAxis: { textPosition: "none" },
+    vAxis: { textPosition: "none", gridlines: { color: "transparent" } },
+    backgroundColor: { fill: "transparent" },
+    chartArea: { width: "100%" }
+} %>
+
+<div class="columns has-text-centered mt-5">
+    <div class="column"></div>
+    <div class="column">
         <% if current_user.accounts.count > 0 %>
             <h2 class="title is-4">Accounts</h2>
             <% current_user.accounts.each do |account| %>
