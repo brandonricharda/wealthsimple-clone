@@ -21,7 +21,7 @@
     <div class="column"></div>
 </div>
 
-<%= area_chart @account.balance_history, colors:["#ffdd57"], curve: false, discrete: true, library: {
+<%= area_chart @account.balance_history, colors:["#ffdd57"], empty: "No data to display in chart – please create your first deposit", curve: false, discrete: true, library: {
     hAxis: { textPosition: "none" },
     vAxis: { textPosition: "none", gridlines: { color: "transparent" } },
     backgroundColor: { fill: "transparent" },
@@ -61,7 +61,7 @@
     <div class="column">
         <div class="box">
             <h2 class="title is-2 mb-6">Deposit insights</h2>
-            <%= column_chart @account.transactions.where(:description => "Deposit").group_by_day(:created_at).sum(:amount), colors:["#387474"] %>
+            <%= column_chart @account.transactions.where(:description => "Deposit").group_by_day(:created_at).sum(:amount), colors:["#387474"], empty: "No data to display in chart – please create your first deposit" %>
         </div>
 
         <div class="box">
