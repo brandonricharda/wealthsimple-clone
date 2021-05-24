@@ -29,7 +29,7 @@
                     <div class="columns">
                         <div class="column">
                             <h3 class="title is-6 mb-4">Date</h3>
-                            <%= transaction.created_at.strftime('%a, %d %b %Y %H:%M:%S') %>
+                            <%= transaction.created_at.strftime('%d %b %H:%M') %>
                         </div>
                         <div class="column">
                             <h3 class="title is-6 mb-4">Type</h3>
@@ -48,6 +48,36 @@
                 <%= button_to("Fund this account", new_transaction_path, :method => :get, class: "button is-warning is-rounded")  %>
             </div>
         <% end %>
+    </div>
+    <div class="column">
+        <div class="box">
+            <h2 class="title is-2 mb-6">Portfolio</h2>
+            <div class="columns">
+                <div class="column">
+                    <h3 class="title is-6 mb-4">Asset</h3>
+                    <%= @holding.asset.ticker %>
+                </div>
+                <div class="column">
+                    <h3 class="title is-6 mb-4">Units</h3>
+                    <%= @holding.units %>
+                </div>
+                <div class="column">
+                    <h3 class="title is-6 mb-4">Risk</h3>
+                    <%= @holding.asset.riskiness %>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    Cash
+                </div>
+                <div class="column">
+                    <%= @account.available_balance %>
+                </div>
+                <div class="column">
+                    <%= 0 %>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="column"></div>
 </div>
