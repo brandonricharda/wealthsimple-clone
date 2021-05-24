@@ -33,6 +33,7 @@ gem "figaro"
 # For display charts
 gem "chartkick"
 gem 'groupdate'
+gem 'paper_trail'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

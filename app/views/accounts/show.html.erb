@@ -1,3 +1,5 @@
+<%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+
 <div class="columns has-background-white has-text-centered">
     <div class="column"></div>
     <div class="column"></div>
@@ -18,6 +20,13 @@
     </div>
     <div class="column"></div>
 </div>
+
+<%= area_chart @account.balance_history, colors:["#ffdd57"], curve: false, discrete: true, library: {
+    hAxis: { textPosition: "none" },
+    vAxis: { textPosition: "none", gridlines: { color: "transparent" } },
+    backgroundColor: { fill: "transparent" },
+    chartArea: { width: "100%" }
+} %>
 
 <div class="columns has-text-centered mt-5">
     <div class="column"></div>

@@ -1,4 +1,5 @@
 class Account < ApplicationRecord
+    has_paper_trail
     validates :name, presence: true
 
     belongs_to :user
@@ -29,6 +30,15 @@ class Account < ApplicationRecord
         asset = Asset.where(riskiness: self.user.risk_tolerance).first
         return if asset == nil
         self.create_holding(:asset_id => asset.id, :units => 0)
+    end
+
+    def balance_history
+        result = {}
+        self.versions.where(:event => "update").each do |version|
+            object = version.reify
+            result[version.created_at] = object.available_balance + object.asset_balance
+        end
+        result
     end
 
 end
