@@ -50,24 +50,6 @@ RSpec.describe Holding, :type => :model do
 
         end
 
-        context "when called with insufficient balance" do
-
-            let(:holding) { account.create_holding(:asset_id => stock.id, :units => 1000) }
-
-            it "doesn't create record" do
-                expect { holding }.to_not change { Holding.count }
-            end
-
-            it "returns one error" do
-                expect(holding.errors.count).to eql 1
-            end
-
-            it "returns transaction limit error" do
-                expect(holding.errors[:units].first).to eql "exceeds available balance"
-            end
-
-        end
-
         context "when too risky for user" do
 
             let(:user) { User.create(:name => ENV["valid_name"], :email => ENV["valid_email"], :password => ENV["password"], :risk_tolerance => 1) }
