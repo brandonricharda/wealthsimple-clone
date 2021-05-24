@@ -5,7 +5,7 @@ class Holding < ApplicationRecord
     after_create :update_account_balances
 
     validates :units, presence: true
-    validate :verify_balance
+    # validate :verify_balance
     validate :check_risk_tolerance
     
     def valuation
@@ -19,11 +19,6 @@ class Holding < ApplicationRecord
     end
 
     private
-
-    def verify_balance
-        return if self.account == nil || self.asset == nil
-        errors.add(:units, "exceeds available balance") if self.valuation > self.account.available_balance
-    end
 
     def check_risk_tolerance
         return if self.account == nil

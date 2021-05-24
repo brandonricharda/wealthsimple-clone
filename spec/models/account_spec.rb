@@ -137,9 +137,15 @@ RSpec.describe Account, :type => :model do
         let!(:holding) { account.create_holding(:asset_id => stock.id, :units => 0) }
 
         context "when called on account with available balance" do
+
             it "buys however many stocks it can" do
                 expect { account.rebalance }.to change { account.available_balance }.by -1000
             end
+
+            it "updates holding" do
+                expect { account.rebalance }.to change { account.holding.units }.by 1000
+            end
+
         end
 
         context "when called on account with no balance" do
