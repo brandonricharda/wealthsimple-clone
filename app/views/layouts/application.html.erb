@@ -13,8 +13,16 @@
     <body>
 
         <% if !current_page?(controller: 'pages', action: 'home') %>
-            <nav class="navbar p-5 mb-4" role="navigation">
+            <nav class="navbar p-5" role="navigation">
                 <div class="navbar-brand"><div class="navbar-item"><img src="https://www.wealthsimple.com/static/ws-wordmark-7a6a6ea384e8586aaeb2597547f86158.svg"></div></div>
+
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                        <%= button_to("Profile", user_path(current_user), :method => :get, class: "button", style: "border: none")  %>
+                        <%= button_to("Help", "https://github.com/brandonricharda/wealthsimple-clone", class: "button", style: "border: none")  %>
+                    </div>
+                </div>
+
             </nav>
         <% end %>
 

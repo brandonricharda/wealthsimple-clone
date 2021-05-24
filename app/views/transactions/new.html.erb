@@ -1,0 +1,18 @@
+<div class="columns has-text-centered mt-5">
+    <div class="column"></div>
+    <div class="column">
+        <div class="box">
+            <h2 class="title is-2">Create a transaction</h2>
+            <%= form_for @transaction do |f| %>
+                <%= f.label :account_id, "What account would you like to use?", class: "subtitle is-6" %>
+                <div class="select is-fullwidth mt-4 mb-4"><%= f.select :account_id, current_user.accounts.map { |account| [account.name, account.id] } %></div>
+                <%= f.label :description, "What type of transaction are you making?", class: "subtitle is-6" %>
+                <div class="select is-fullwidth mt-4 mb-4"><%= f.select :description, options_for_select([["Deposit", "Deposit"], ["Withdrawal", "Withdrawal"], ["Asset Sale", "Asset Sale"]]) %></div>
+                <%= f.label :amount, "How much would you like to transact?", class: "subtitle is-6" %>
+                <%= f.number_field :amount, min: 0, max: 100000, class: "input is-fullwidth mb-4 mt-4" %>
+                <%= f.submit class: "button is-fullwidth is-warning is-rounded" %>
+            <% end %>
+        </div>
+    </div>
+    <div class="column"></div>
+</div>

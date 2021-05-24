@@ -1,1 +1,37 @@
-<h2>Hey hey, my my</h2>
+<div class="columns has-text-centered mt-5">
+    <div class="column"></div>
+    <div class="column">
+        <h4 class="subtitle is-6 mt-6">Hello <%= current_user.name %>, you have</h4>
+        <h2 class="title is-1">$<%= current_user.total_balance %></h2>
+
+        <% if current_user.accounts.count > 0 %>
+            <h2 class="title is-4">Accounts</h2>
+            <% current_user.accounts.each do |account| %>
+                <div class="box">
+                    <div class="columns">
+                        <div class="column">
+                            <h3 class="title is-6 mb-4">Name</h3>
+                            <%= account.name %>
+                        </div>
+                        <div class="column">
+                            <h3 class="title is-6 mb-4">Invested in</h3>
+                            <%= account.holding.asset.ticker %>
+                        </div>
+                        <div class="column">
+                            <h3 class="title is-6 mb-4">Value</h3>
+                            $<%= account.holding.valuation %>
+                        </div>
+                    </div>
+                    <%= button_to("See account", account, :method => :get, class: "button is-warning is-rounded")  %>
+                </div>
+            <% end %>
+        <% else %>
+            <div class="box">
+                <h2 class="title is-3">You have no accounts yet</h2>
+                <%= button_to("Open an account", new_account_path, :method => :get, class: "button is-warning is-rounded")  %>
+            </div>
+        <% end %>
+
+    </div>
+    <div class="column"></div>
+</div>

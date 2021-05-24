@@ -1,0 +1,53 @@
+<div class="columns has-background-white has-text-centered">
+    <div class="column"></div>
+    <div class="column"></div>
+    <div class="column">
+        <h3 class="title is-5">Account name</h3>
+        <h4 class="subtitle is-4"><%= @account.name %></h4>
+    </div>
+    <div class="column">
+        <h3 class="title is-5">Account value</h3>
+        <h4 class="subtitle is-4">$<%= @account.asset_balance + @account.available_balance %></h4>
+    </div>
+    <div class="column">
+        <h3 class="title is-5">Invested in</h3>
+        <h4 class="subtitle is-4"><%= @account.holding.asset.ticker %></h4>
+    </div>
+    <div class="column">
+        <%= button_to("Fund this account", new_transaction_path, :method => :get, class: "button is-warning is-rounded")  %>
+    </div>
+    <div class="column"></div>
+</div>
+
+<div class="columns has-text-centered mt-5">
+    <div class="column"></div>
+    <div class="column">
+        <% if @account.transactions.count > 0 %>
+            <div class="box">
+                <h2 class="title is-2 mb-6">Transactions</h2>
+                <% @account.transactions.each do |transaction| %>
+                    <div class="columns">
+                        <div class="column">
+                            <h3 class="title is-6 mb-4">Date</h3>
+                            <%= transaction.created_at.strftime("%Y-%d-%m") %>
+                        </div>
+                        <div class="column">
+                            <h3 class="title is-6 mb-4">Type</h3>
+                            <%= transaction.description %>
+                        </div>
+                        <div class="column">
+                            <h3 class="title is-6 mb-4">Amount</h3>
+                            $<%= transaction.amount %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        <% else %>
+            <div class="box">
+                <h2 class="title is-3">No transactions to show yet</h2>
+                <%= button_to("Fund this account", new_transaction_path, :method => :get, class: "button is-warning is-rounded")  %>
+            </div>
+        <% end %>
+    </div>
+    <div class="column"></div>
+</div>

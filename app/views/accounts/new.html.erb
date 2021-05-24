@@ -1,0 +1,16 @@
+<div class="columns has-text-centered mt-5">
+    <div class="column"></div>
+    <div class="column">
+        <div class="box">
+            <h2 class="title is-2">Create an account</h2>
+            <%= form_for @account do |f| %>
+                <%= f.hidden_field :user_id, value: current_user.id %>
+                <%= f.text_field :name, placeholder: "Give your account a nickname", class: "input is-fullwidth mb-4" %>
+                <%= f.label :number_field, "Create your first deposit (optional)", class: "subtitle is-6" %>
+                <%= f.number_field :available_balance, min: 0, max: 100000, class: "input is-fullwidth mb-4 mt-4" %>
+                <%= f.submit class: "button is-fullwidth is-warning is-rounded" %>
+            <% end %>
+        </div>
+    </div>
+    <div class="column"></div>
+</div>
