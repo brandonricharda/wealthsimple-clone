@@ -3,6 +3,13 @@
     <div class="column">
         <div class="box">
             <h2 class="title is-2">Create a transaction</h2>
+            <% if @transaction.errors.any? %>
+                <div class="notification is-danger">
+                    <% @transaction.errors.each do |error| %>
+                        <%= error.full_message %></br>
+                    <% end %>
+                </div>
+            <% end %>
             <%= form_for @transaction do |f| %>
                 <%= f.label :account_id, "What account would you like to use?", class: "subtitle is-6" %>
                 <div class="select is-fullwidth mt-4 mb-4"><%= f.select :account_id, current_user.accounts.map { |account| [account.name, account.id] } %></div>

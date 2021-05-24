@@ -14,7 +14,7 @@ class SessionsController < Devise::SessionsController
         set_flash_message(:notice, :signed_in) if is_navigational_format?
         sign_in(resource_name, resource)
         if !session[:return_to].blank?
-            redirect_to request.referrer
+            render :new
             session[:return_to] = nil
         else
             respond_with resource, :location => after_sign_in_path_for(resource)

@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
             if @account.save
                 format.html { redirect_to @account }
             else
-                format.html { redirect_to request.referrer }
+                format.html { render :new }
             end
         end
     end

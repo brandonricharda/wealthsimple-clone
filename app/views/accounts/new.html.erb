@@ -3,6 +3,13 @@
     <div class="column">
         <div class="box">
             <h2 class="title is-2">Create an account</h2>
+            <% if @account.errors.any? %>
+                <div class="notification is-danger">
+                    <% @account.errors.each do |error| %>
+                        <%= error.full_message %></br>
+                    <% end %>
+                </div>
+            <% end %>
             <%= form_for @account do |f| %>
                 <%= f.hidden_field :user_id, value: current_user.id %>
                 <%= f.text_field :name, placeholder: "Give your account a nickname", class: "input is-fullwidth mb-4" %>

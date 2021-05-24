@@ -4,7 +4,13 @@
         <div class="box">
             <h2 class="title is-3">Get started with Wealthsimple</h2>
             <%= form_for @user do |f| %>
-                <%= render "devise/shared/error_messages", resource: resource %>
+                <% if @user.errors.any? %>
+                    <div class="notification is-danger">
+                        <% @user.errors.each do |error| %>
+                            <%= error.full_message %></br>
+                        <% end %>
+                    </div>
+                <% end %>
                 <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email", class: "input mb-4" %>
                 <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "Name", class: "input mb-4" %>
                 <%= f.password_field :password, autocomplete: "new-password", placeholder: "Password", class: "input mb-4" %>

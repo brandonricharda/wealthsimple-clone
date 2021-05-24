@@ -13,7 +13,7 @@ class RegistrationsController < Devise::RegistrationsController
             if @user.save
                 format.html { redirect_to user_session_path }
             else
-                format.html { redirect_to request.referrer }
+                format.html { render :new }
             end
         end
     end

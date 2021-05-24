@@ -10,7 +10,7 @@ class TransactionsController < ApplicationController
             if @transaction.save
                 format.html { redirect_to @transaction.account }
             else
-                format.html { redirect_to request.referrer }
+                format.html { render :new }
             end
         end
     end
