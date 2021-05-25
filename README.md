@@ -54,7 +54,7 @@ Once you create your account, you'll be redirected here and asked to log in.
 
 ## Profile Page
 
-<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-account-page.png">
+<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-empty-profile.png">
 
 Once you've logged in, you'll land on your profile page. If you're a new user, the page will be virtually empty. That's because you haven't created an investment Account yet!
 
@@ -76,7 +76,7 @@ It works like this:
 
 ## Empty Account Page
 
-<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-empty-account-page.png">
+<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-empty-account.png">
 
 Once you've created your account, you'll be redirected to this page, which shows your account summary. As with the new profile page, there won't be much to look at until you start making mock transactions, which you can do by clicking on the "Fund this account" button.
 
@@ -90,15 +90,15 @@ Here, you can choose which account you'd like to interact with, what type of tra
 
 The assumption when you're making a **deposit** is that it will come from some external bank account. When you make a withdrawal, however, you will be limited to mock funds within your account. In other words, validations prevent you withdrawing more money from the mock app than you actually have in it.
 
-Here's what that would look like:
+Here's what that looks like:
 
-<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-transaction-error-page.png">
+<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-withdrawal-error.png">
 
 ## Account Page with First Transaction
 
 Once you make your first deposit, information starts filling in on the Account page.
 
-<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-account-page-first-transaction.png">
+<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-first-deposit.png">
 
 Most prominent is the yellow area chart up top. The horizontal axis represents time while the vertical axis represents your account's balance. This chart is created using Chartkick and Google Charts.
 
@@ -108,15 +108,15 @@ Lastly, you'll see the "Deposit insights" box. As you make deposits throughout t
 
 If you scroll down on this page, you'll also see the "Portfolio" box has been populated with data. 
 
-<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-account-page-first-transaction-02.png">
+<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-first-deposit-02.png">
 
-This happens through the Holding and Account models. The Holding model contains a units column, which is used for SPY in the screenshot above. 
+This happens through the Holding and Account models. 
 
 The "Cash" item is populated through the Account's available balance column. Now, because deposits are automatically invested, this will most likely always be zero based on the assets I've seeded the database with. They're all priced at $1 per unit, which means even an odd account balance (i.e. $3,333) can be invested. However, if an asset were priced at $2 and the account's balance was $3,333, the app would simply invest as much as it could and then leave the rest in "Cash." This relies on the modulo operator.
 
 ## Account Page with Many Transactions
 
-<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-account-page-many-transactions.png">
+<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-many-deposits.png">
 
 As you keep making transactions, the historical balance graph will adjust accordingly, as will all other non-static elements on the page (i.e. the "Transactions" and "Deposit insights" boxes).
 
@@ -124,7 +124,7 @@ As you keep making transactions, the historical balance graph will adjust accord
 
 ## Profile Page with Accounts and Transactions
 
-<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-user-page.png">
+<img src="https://github.com/brandonricharda/wealthsimple-clone/blob/main/app/assets/images/wealthsimple-clone-profile-page-many-transactions.png">
 
 Lastly, if you return to the Profile Page, you'll see it's now filled out with lots of information. There's the big balance tracker at the top of the page. Underneath it is an area chart showcasing how the user's total balance (across all accounts) has changed over time.
 
