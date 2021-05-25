@@ -4,7 +4,7 @@
 
 ## Application Summary
 
-This is a functional clone of Wealthsimple, the popular Canadian robo-advisor application, built with Ruby on Rails. Wealthsimple is one of the applications that inspired me to learn web development in the first place. Consequently, it was loads of fun to clone.
+This is a functional clone of Wealthsimple, the popular Canadian robo-advisor application, I built with Ruby on Rails. Wealthsimple is one of the applications that inspired me to learn web development in the first place. Consequently, it was loads of fun to clone.
 
 With this clone application, you can:
 
