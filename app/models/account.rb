@@ -3,8 +3,8 @@ class Account < ApplicationRecord
     validates :name, presence: true
 
     belongs_to :user
-    has_one :holding
-    has_many :transactions
+    has_one :holding, :dependent => :destroy
+    has_many :transactions, :dependent => :destroy
 
     after_create :add_holding
 

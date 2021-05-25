@@ -7,7 +7,7 @@ class User < ApplicationRecord
     validates :name, presence: true
     validates :risk_tolerance, presence: true, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
 
-    has_many :accounts
+    has_many :accounts, :dependent => :destroy
 
     def total_balance
         total = 0
