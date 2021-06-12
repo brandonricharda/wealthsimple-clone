@@ -9,7 +9,7 @@
     <div class="column"></div>
 </div>
 
-<%= area_chart @user.balance_history, colors:["#ffdd57"], curve: false, discrete: true, empty: "No data to display in chart – please create and fund an account", library: {
+<%= area_chart @user.balance_history, colors:["#ffdd57"], curve: false, discrete: true, empty: "No data", library: {
     hAxis: { textPosition: "none" },
     vAxis: { textPosition: "none", gridlines: { color: "transparent" } },
     backgroundColor: { fill: "transparent" },
